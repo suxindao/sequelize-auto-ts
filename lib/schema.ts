@@ -211,13 +211,17 @@ export class Field
 {
     public targetIdFieldType:string; // if this is a prefixed foreign key, then the name of the non-prefixed key is here
 
-    constructor(public fieldName:string, public fieldType:string, public isNullable:string, public table:Table, public isReference:boolean = false, public isCalculated:boolean = false)
+    constructor(public fieldName:string, public fieldType:string, public isNullableString:string, public table:Table, public isReference:boolean = false, public isCalculated:boolean = false)
     {
 
     }
 
+    isNullable():boolean {
+        return this.isNullableString==='YES';
+    }
+
     fieldNameAndIsNullable():string {
-        return this.fieldName + ((this.isNullable==='YES') ? '?' : '');
+        return this.fieldName + (this.isNullable() ? '?' : '');
     }
 
     fieldNameProperCase():string
@@ -250,14 +254,14 @@ export class Field
         return translated;
     }
 
-    sequelizeFieldType():string
+    sequelizeFieldType():string[]
     {
         var translated:string = Schema.fieldTypeSequelize[this.fieldType];
         if (translated == undefined) {
             console.log('Unable to sequelize field type:' + this.fieldType);
             translated = this.fieldType;
         }
-        return translated;
+        return [`type: ${translated}`];
     }
 
     isIdField():boolean {
@@ -274,12 +278,25 @@ export class Field
     }
 
     defineFieldType():string {
+        var fieldType:string[] = [];
         if ( this == this.table.fields[0]) {
-            return '{type: Sequelize.INTEGER, primaryKey: true, autoIncrement: true}';
+            fieldType = [
+                'type: Sequelize.INTEGER',
+                'primaryKey: true',
+                'autoIncrement: true'
+            ];
         } else if (this.table.tableName.substr(0,4) == 'Xref' && this == this.table.fields[1]) {
-            return '{type: "number", primaryKey: true}';
+            fieldType = [
+                'type: "number"',
+                'primaryKey: true'
+            ];
+        } else {
+            fieldType = this.sequelizeFieldType();
+            if (!this.isNullable()) {
+                fieldType.push('allowNull: false');
+            }
         }
-        return this.sequelizeFieldType();
+        return  '{' + fieldType.join(', ') + '}';
     }
 
     public tableNameSingular():string
