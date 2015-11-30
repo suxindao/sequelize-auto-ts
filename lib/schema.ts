@@ -10,7 +10,7 @@ import util = require('./util');
 
 var Sequelize:sequelize.SequelizeStatic = require("sequelize");
 import fs = require('fs');
-var _:sequelize.Lodash = Sequelize.Utils._;
+import _ = require('lodash');
 
 export class Schema {
 
@@ -395,7 +395,7 @@ interface CustomFieldDefinitionRow extends ColumnDefinitionRow, ReferenceDefinit
 
 }
 
-export function read(database:string, username:string, password:string, options:sequelize.Options, callback:(err:Error, schema:Schema) => void):void
+export function read(database:string, username:string, password:string, options:sequelize.Options, naming:any, callback:(err:Error, schema:Schema) => void):void
 {
     var schema:Schema;
     var sequelize:sequelize.Sequelize = new Sequelize(database, username, password, options);
@@ -597,9 +597,12 @@ export function read(database:string, username:string, password:string, options:
                 // so we take first character and make it uppercase,
                 // then take rest of prefix from foreign key
                 // then append the referenced table name
-                associationName = row.column_name.charAt(0).toUpperCase() +
-                    row.column_name.substr(1, row.column_name.length - row.referenced_column_name.length - 1) +
-                    row.referenced_table_name;
+                associationName = row.column_name.slice(0, -3);
+                if (_.has(naming, 'associationName.tail') && naming.associationName.tail!==null) {
+                    if (naming.associationName.tail==='tableName') {
+                        associationName += row.referenced_table_name;
+                    }
+                }
 
                 if (!associationsFound[associationName]) {
                     schema.associations.push(new Association(associationName));

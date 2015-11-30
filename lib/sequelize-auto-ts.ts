@@ -19,6 +19,7 @@ export interface GenerateOptions
     username:string;
     password:string;
     options:sequelize.Options;
+    naming:any;
     modelFactory?:boolean;
 
     targetDirectory:string;
@@ -29,7 +30,7 @@ export function generate(options:GenerateOptions, callback?:(err:Error) => void)
         };
     }
 
-    schema.read(options.database, options.username, options.password, options.options,
+    schema.read(options.database, options.username, options.password, options.options, options.naming,
         function (err:Error, schema:schema.Schema) {
             if (err) {
                 callback(err);
