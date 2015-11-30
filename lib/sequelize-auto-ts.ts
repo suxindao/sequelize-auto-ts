@@ -1,15 +1,14 @@
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="./sequelize.d.ts" />
+/// <reference path="../typings/tsd.d.ts"/>
 
+import sequelize = require('sequelize');
 import schema = require("./schema");
 import path = require("path");
 var ScriptTemplate = require("script-template");
 import fs = require("fs");
+import _ = require("lodash");
 
 
 var Sequelize:sequelize.SequelizeStatic = require("sequelize");
-
-var _:sequelize.Lodash = Sequelize.Utils._;
 
 var targetProjectRootDirectory:string = null;
 

@@ -13,6 +13,12 @@
     },
     "node/node.d.ts": {
       "commit": "e4d44c263bfeefc5c5adf3f36db5d016218b4450"
+    },
+    "sequelize/sequelize.d.ts": {
+      "commit": "e4d44c263bfeefc5c5adf3f36db5d016218b4450"
+    },
+    "underscore.string/underscore.string.d.ts": {
+      "commit": "e4d44c263bfeefc5c5adf3f36db5d016218b4450"
     }
   }
 }

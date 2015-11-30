@@ -8,9 +8,9 @@
 //
 ////////////////////////////////////////////////////////////////////
 
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="./sequelize.d.ts" />
+/// <reference path="../typings/tsd.d.ts" />
 
+import sequelize = require('sequelize');
 import types = require('./sequelize-types'); // important so we can use same fully qualified names in all generated files
 
 /*__each__ idFields */ export interface __fieldNameProperCase__ { __fieldNameProperCase__:number; }

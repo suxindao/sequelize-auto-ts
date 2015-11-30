@@ -3,12 +3,12 @@
  * Loads and exposes schema from database
  */
 
-/// <reference path="../typings/node/node.d.ts" />
-/// <reference path="./sequelize.d.ts" />
+/// <reference path="../typings/tsd.d.ts"/>
 /// <reference path="../typings/change-case/change-case.d.ts"/>
 
 import util = require('./util');
 
+import sequelize = require('sequelize');
 var Sequelize:sequelize.SequelizeStatic = require("sequelize");
 import fs = require('fs');
 import _ = require('lodash');
@@ -181,7 +181,7 @@ export class Table
 
     public tableNameSingular():string
     {
-        return Sequelize.Utils.singularize(this.tableName, "en");
+        return Sequelize.Utils.singularize(this.tableName);
     }
 
     public tableNameSingularCamel():string
@@ -447,7 +447,8 @@ export function read(database:string, username:string, password:string, options:
 
     sequelize
         .query(sql)
-        .complete(processTablesAndColumns);
+        .then((rows)=>processTablesAndColumns(undefined, rows))
+        .catch((err)=>processTablesAndColumns(err, null));
 
     function processTablesAndColumns(err:Error, rows:Array<ColumnDefinitionRow>):void
     {
@@ -488,7 +489,8 @@ export function read(database:string, username:string, password:string, options:
 
         sequelize
             .query(sql)
-            .complete(processCustomFields);
+            .then((customFields)=>processCustomFields(undefined, customFields))
+            .catch((err)=>processCustomFields(err, null));
 
         function processCustomFields(err:Error, customFields:CustomFieldDefinitionRow[]):void {
 
@@ -571,7 +573,8 @@ export function read(database:string, username:string, password:string, options:
 
         sequelize
             .query(sql)
-            .complete(processReferences);
+            .then((rows)=>processReferences(undefined, rows))
+            .catch((err)=>processReferences(err, null));
     }
 
     function processReferences(err:Error, rows:Array<ReferenceDefinitionRow>):void
@@ -803,7 +806,7 @@ export function read(database:string, username:string, password:string, options:
                 return;
             }
 
-            var otherTableName:string = Sequelize.Utils.pluralize(field.fieldNameProperCase().substr(0, field.fieldName.length - Schema.idSuffix.length), "en");
+            var otherTableName:string = Sequelize.Utils.pluralize(field.fieldNameProperCase().substr(0, field.fieldName.length - Schema.idSuffix.length));
 
             var otherTable:Table = tableLookup[otherTableName];
             if (otherTable === undefined) {
@@ -821,7 +824,7 @@ export function read(database:string, username:string, password:string, options:
 
             schema.references.push(reference);
 
-            var otherTableSingular:string = Sequelize.Utils.singularize(otherTableName, 'en');
+            var otherTableSingular:string = Sequelize.Utils.singularize(otherTableName);
 
             view.fields.push(new Field(
                 otherTableSingular,
@@ -833,7 +836,7 @@ export function read(database:string, username:string, password:string, options:
 
             otherTable.fields.push(new Field(
                 util.camelCase(view.tableName),
-                Sequelize.Utils.singularize(view.tableName, 'en') + 'Pojo[]',
+                Sequelize.Utils.singularize(view.tableName) + 'Pojo[]',
                 undefined,
                 undefined,
                 otherTable,

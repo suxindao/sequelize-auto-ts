@@ -37,14 +37,15 @@
         "lib/sequelize-models.ts",
         "lib/sequelize-names.ts",
         "lib/sequelize-types.ts",
-        "lib/sequelize.d.ts",
         "lib/util.ts",
         "typings/bluebird/bluebird.d.ts",
         "typings/change-case/change-case.d.ts",
         "typings/lodash/lodash.d.ts",
         "typings/node/node.d.ts",
+        "typings/sequelize/sequelize.d.ts",
         "typings/tsd.d.ts",
-        "typings/underscore.string/underscore.string.d.ts"
+        "typings/underscore.string/underscore.string.d.ts",
+        "typings/validator/validator.d.ts"
     ],
     "atom": {
         "rewriteTsconfig": true

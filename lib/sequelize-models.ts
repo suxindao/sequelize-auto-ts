@@ -8,9 +8,9 @@
 //
 ////////////////////////////////////////////////////////////////////
 
-/// <reference path='../typings/node/node.d.ts' />
-/// <reference path='./sequelize.d.ts' />
+/// <reference path="../typings/tsd.d.ts" />
 
+import sequelize = require('sequelize');
 import types = require('./sequelize-types');
 
 var Sequelize:sequelize.SequelizeStatic = require('sequelize');
@@ -66,8 +66,8 @@ export function initialize(database:string, username:string, password:string, op
 
     /*__startEach__ xrefs */
 
-    __firstTableName__.hasMany(__secondTableName__, { through: '__xrefTableName__'});
-    __secondTableName__.hasMany(__firstTableName__, { through: '__xrefTableName__'});
+    __firstTableName__.belongsToMany(__secondTableName__, { through: '__xrefTableName__'});
+    __secondTableName__.belongsToMany(__firstTableName__, { through: '__xrefTableName__'});
 
     /*__endEach__*/
 
