@@ -4,5 +4,15 @@
   "ref": "sequelize",
   "path": "typings",
   "bundle": "typings/tsd.d.ts",
-  "installed": {}
+  "installed": {
+    "lodash/lodash.d.ts": {
+      "commit": "e4d44c263bfeefc5c5adf3f36db5d016218b4450"
+    },
+    "bluebird/bluebird.d.ts": {
+      "commit": "e4d44c263bfeefc5c5adf3f36db5d016218b4450"
+    },
+    "node/node.d.ts": {
+      "commit": "e4d44c263bfeefc5c5adf3f36db5d016218b4450"
+    }
+  }
 }
