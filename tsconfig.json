@@ -40,6 +40,7 @@
         "lib/sequelize.d.ts",
         "lib/util.ts",
         "typings/bluebird/bluebird.d.ts",
+        "typings/change-case/change-case.d.ts",
         "typings/lodash/lodash.d.ts",
         "typings/node/node.d.ts",
         "typings/tsd.d.ts",
