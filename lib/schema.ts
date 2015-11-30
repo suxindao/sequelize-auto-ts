@@ -14,6 +14,9 @@ import fs = require('fs');
 import _ = require('lodash');
 import ChangeCase = require('change-case');
 
+const DEFAULT_CASE_TYPE = 'case';
+var naming:any;
+
 export class Schema {
 
     public static idSuffix:string = "id"; // NOTE: Must be LOWER case
@@ -163,6 +166,19 @@ export class Table
 
     }
 
+    pojoName():string {
+        var name:string = ChangeCase.snake(this.tableName) + '_pojo';
+        return ChangeCase[naming.defaults.caseType](name);
+    }
+    instanceTypeName():string {
+        var name:string = ChangeCase.snake(this.tableName) + '_instance';
+        return ChangeCase[naming.defaults.caseType](name);
+    }
+    modelTypeName():string {
+        var name:string = ChangeCase.snake(this.tableName) + '_model';
+        return ChangeCase[naming.defaults.caseType](name);
+    }
+
     public tableNameSingular():string
     {
         return Sequelize.Utils.singularize(this.tableName, "en");
@@ -173,9 +189,14 @@ export class Table
         return toCamelCase(this.tableNameSingular());
     }
 
+    public tableNamePascal():string
+    {
+        return ChangeCase.pascal(this.tableName);
+    }
+
     public tableNameCamel():string
     {
-        return toCamelCase(this.tableName);
+        return ChangeCase.camel(this.tableName);
     }
 
     public tableNameModel():string
@@ -228,7 +249,8 @@ export class Field
 
     fieldNameProperCase():string
     {
-        return toTitleCase(this.fieldName);
+        var fieldName:string = ChangeCase[naming.defaults.caseType](this.fieldName);
+        return fieldName;
     }
 
     translatedFieldType():string
@@ -403,8 +425,12 @@ interface CustomFieldDefinitionRow extends ColumnDefinitionRow, ReferenceDefinit
 
 }
 
-export function read(database:string, username:string, password:string, options:sequelize.Options, naming:any, callback:(err:Error, schema:Schema) => void):void
+export function read(database:string, username:string, password:string, options:sequelize.Options, namingOptions:any, callback:(err:Error, schema:Schema) => void):void
 {
+    naming = namingOptions || {};
+    naming.defaults = naming.defaults || {};
+    naming.defaults.caseType = naming.defaults.caseType || DEFAULT_CASE_TYPE;
+
     var schema:Schema;
     var sequelize:sequelize.Sequelize = new Sequelize(database, username, password, options);
     var tableLookup:util.Dictionary<Table> = {};
@@ -640,7 +666,7 @@ export function read(database:string, username:string, password:string, options:
                         associationName === undefined
                             ? row.referenced_table_name                             // Accounts -> account
                             : associationName)),                                    // ownerUserId -> OwnerUsers -> ownerUser
-                Sequelize.Utils.singularize(row.referenced_table_name) + 'Pojo',    // Accounts -> AccountPojo
+                ChangeCase[naming.defaults.caseType](ChangeCase.snake(row.referenced_table_name) + '_pojo'),    // Accounts -> AccountPojo
                 undefined,
                 undefined,
                 childTable,
@@ -890,7 +916,7 @@ export function read(database:string, username:string, password:string, options:
                         var rest:string = fieldName.charAt(c).toLowerCase() + fieldName.substr(c + 1);
                         if (idFieldLookup[rest]) {
                             // found it
-                            field.targetIdFieldType = rest.charAt(0).toUpperCase() + rest.substr(1);
+                            field.targetIdFieldType = ChangeCase[naming.defaults.caseType](rest);
                         }
                     }
                 }

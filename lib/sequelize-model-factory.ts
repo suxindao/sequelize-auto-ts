@@ -22,7 +22,7 @@ export class Models {
 
     public SEQUELIZE:sequelize.Sequelize;
 
-    /*__each__ tables */ public __tableNameCamel__:types.__tableName__Model;
+    /*__each__ tables */ public __tableNameCamel__:types.__modelTypeName__;
 
     /*__ignore__*/ __primaryTableNameCamel__:sequelize.Model<any, any>;
     /*__ignore__*/ __foreignTableNameCamel__:sequelize.Model<any, any>;
@@ -36,7 +36,7 @@ export class Models {
 
         /*__startEach__ tables */
 
-        this.__tableNameCamel__ = <types.__tableName__Model> this.SEQUELIZE.define<types.__tableNameSingular__Instance, types.__tableNameSingular__Pojo>('__tableNameSingular__', {
+        this.__tableNameCamel__ = <types.__modelTypeName__> this.SEQUELIZE.define<types.__instanceTypeName__, types.__pojoName__>('__tableNameSingular__', {
                 /*__each__ realDbFields, */'__fieldName__': __defineFieldType__
             },
             {

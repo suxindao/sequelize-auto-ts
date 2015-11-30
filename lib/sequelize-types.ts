@@ -17,8 +17,8 @@ import types = require('./sequelize-types'); // important so we can use same ful
 
 /*__ignore__*/ export interface __translatedFieldType__ {}
 /*__ignore__*/ export interface __customFieldType__ {}
-/*__ignore__*/ export interface __tableNameSingular__Instance {}
-/*__ignore__*/ export interface __tableNameSingular__Pojo {}
+/*__ignore__*/ export interface __instanceTypeName__ {}
+/*__ignore__*/ export interface __pojoName__ {}
 /*__ignore__*/ export interface __idFieldNameTitleCase__ {}
 
 var asserters:{[typeName:string]:(pojo:any, allowUndefined?:boolean) => void} = {};
@@ -34,16 +34,16 @@ var asserters:{[typeName:string]:(pojo:any, allowUndefined?:boolean) => void} = 
 //////////////////////////////////////////////////////////////////////////////
 
 
-export interface __tableNameSingular__Pojo
+export interface __pojoName__
 {
     /*__each__ fields */ __fieldNameAndIsNullable__:__customFieldType__;
 }
 
-export interface __tableNameSingular__Instance extends sequelize.Instance<__tableNameSingular__Instance, __tableNameSingular__Pojo>, __tableNameSingular__Pojo { }
+export interface __instanceTypeName__ extends sequelize.Instance<__instanceTypeName__, __pojoName__>, __pojoName__ { }
 
-export interface __tableName__Model extends sequelize.Model<__tableNameSingular__Instance, __tableNameSingular__Pojo> { }
+export interface __modelTypeName__ extends sequelize.Model<__instanceTypeName__, __pojoName__> { }
 
-export function assertValid__tableNameSingular__(pojo:__tableNameSingular__Pojo, allowUndefined?:boolean):void {
+export function assertValid__tableNameSingular__(pojo:__pojoName__, allowUndefined?:boolean):void {
 
     if (pojo === undefined || pojo === null) {
         if (allowUndefined) {
