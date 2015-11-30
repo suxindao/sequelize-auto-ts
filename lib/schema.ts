@@ -609,15 +609,15 @@ export function read(database:string, username:string, password:string, options:
 
             // create array of children in parent, i.e., AccountPojo.leads:LeadPojo[]
             // but not for custom fields
-            if (!row.hasOwnProperty('ordinal_position')) {
-                parentTable.fields.push(new Field(
-                    util.camelCase(row.table_name),                                     // Leads -> leads
-                    Sequelize.Utils.singularize(row.table_name) + 'Pojo[]',             // Leads -> LeadPojo[]
-                    undefined,
-                    undefined,
-                    parentTable,                                                        // Accounts table reference
-                    true));
-            }
+            // if (!row.hasOwnProperty('ordinal_position')) {
+                // parentTable.fields.push(new Field(
+                //     util.camelCase(row.table_name),                                     // Leads -> leads
+                //     Sequelize.Utils.singularize(row.table_name) + 'Pojo[]',             // Leads -> LeadPojo[]
+                //     undefined,
+                //     undefined,
+                //     parentTable,                                                        // Accounts table reference
+                //     true));
+            // }
 
             // create singular parent reference from child
             childTable.fields.push(new Field(
