@@ -5,12 +5,14 @@
 
 /// <reference path="../typings/node/node.d.ts" />
 /// <reference path="./sequelize.d.ts" />
+/// <reference path="../typings/change-case/change-case.d.ts"/>
 
 import util = require('./util');
 
 var Sequelize:sequelize.SequelizeStatic = require("sequelize");
 import fs = require('fs');
 import _ = require('lodash');
+import ChangeCase = require('change-case');
 
 export class Schema {
 
@@ -597,11 +599,15 @@ export function read(database:string, username:string, password:string, options:
                 // so we take first character and make it uppercase,
                 // then take rest of prefix from foreign key
                 // then append the referenced table name
-                associationName = row.column_name.slice(0, -3);
+                associationName = ChangeCase.snake(row.column_name);
+                associationName = row.column_name.slice(0, (row.referenced_column_name.length + 1) * -1);
                 if (_.has(naming, 'associationName.tail') && naming.associationName.tail!==null) {
                     if (naming.associationName.tail==='tableName') {
-                        associationName += row.referenced_table_name;
+                        associationName += '_' + row.referenced_table_name;
                     }
+                }
+                if (_.has(naming, 'associationName.caseType')) {
+                    associationName = ChangeCase[naming.associationName.caseType](associationName);
                 }
 
                 if (!associationsFound[associationName]) {
