@@ -147,7 +147,7 @@ models.Users.findAll().complete((err:Error, users:types.UserInstance[]) => {
 });
 ```
 
-In the above example, `findAll().complete()` takes a typed callback. If the argument types are not defined correctly, TypeScript will give a proper syntax error. 
+In the above example, `findAll().complete()` takes a typed callback. If the argument types are not defined correctly, TypeScript will give a proper syntax error.
 
 
 
@@ -161,3 +161,27 @@ http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html
 
 lower_case_table_names=2
 
+
+
+
+# sequelize-auto-ts.json
+
+e.g.
+
+```json
+{
+    "database": "test_db",
+    "username": "root",
+    "password": "test",
+    "targetDirectory": "dest",
+    "naming": {
+        "defaults": {
+            "caseType": "pascal"
+        },
+        "associationName": {
+            "caseType": "snake",
+            "tail": null
+        }
+    }
+}
+```
