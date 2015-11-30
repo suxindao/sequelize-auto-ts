@@ -191,7 +191,7 @@ export class Table
     idFieldName():string {
         var idField:Field = this.idField();
         if (idField === undefined) {
-            console.log('Unable to find ID field for type: ' + this.tableName);
+            // console.log('Unable to find ID field for type: ' + this.tableName);
             return '!!cannotFindIdFieldOn' + this.tableName + '!!';
         }
         return idField.fieldName;
@@ -200,7 +200,7 @@ export class Table
     idFieldNameTitleCase():string {
         var idField:Field = this.idField();
         if (idField === undefined) {
-            console.log('Unable to find ID field for type: ' + this.tableName);
+            // console.log('Unable to find ID field for type: ' + this.tableName);
             return '!!cannotFindIdFieldOn' + this.tableName + '!!';
         }
         return idField.fieldNameProperCase();
@@ -766,7 +766,7 @@ export function read(database:string, username:string, password:string, options:
 
             var otherTable:Table = tableLookup[otherTableName];
             if (otherTable === undefined) {
-                console.log('Unable to find related table for view ' + view.tableName + '.' + field.fieldName + ', expected ' + otherTableName + '.');
+                // console.log('Unable to find related table for view ' + view.tableName + '.' + field.fieldName + ', expected ' + otherTableName + '.');
                 return;
             }
 
