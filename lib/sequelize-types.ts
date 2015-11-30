@@ -36,7 +36,7 @@ var asserters:{[typeName:string]:(pojo:any, allowUndefined?:boolean) => void} = 
 
 export interface __tableNameSingular__Pojo
 {
-    /*__each__ fields */ __fieldName__?:__customFieldType__;
+    /*__each__ fields */ __fieldNameAndIsNullable__:__customFieldType__;
 }
 
 export interface __tableNameSingular__Instance extends sequelize.Instance<__tableNameSingular__Instance, __tableNameSingular__Pojo>, __tableNameSingular__Pojo { }

@@ -78,7 +78,7 @@ export class Schema {
         mediumint: 'Sequelize.INTEGER',
         bigint: 'Sequelize.INTEGER',
         year: 'Sequelize.INTEGER',
-        
+
         float: 'Sequelize.DECIMAL',
         double: 'Sequelize.DECIMAL',
         decimal: 'Sequelize.DECIMAL',
@@ -211,9 +211,13 @@ export class Field
 {
     public targetIdFieldType:string; // if this is a prefixed foreign key, then the name of the non-prefixed key is here
 
-    constructor(public fieldName:string, public fieldType:string, public table:Table, public isReference:boolean = false, public isCalculated:boolean = false)
+    constructor(public fieldName:string, public fieldType:string, public isNullable:string, public table:Table, public isReference:boolean = false, public isCalculated:boolean = false)
     {
 
+    }
+
+    fieldNameAndIsNullable():string {
+        return this.fieldName + ((this.isNullable==='YES') ? '?' : '');
     }
 
     fieldNameProperCase():string
@@ -353,6 +357,7 @@ interface ColumnDefinitionRow
     table_name:string;
     column_name:string;
     data_type:string;
+    is_nullable:string;
     ordinal_position:number;
 }
 
@@ -380,7 +385,7 @@ export function read(database:string, username:string, password:string, options:
     var idFieldLookup:util.Dictionary<boolean> = {};
 
     var sql:string =
-        "select table_name, column_name, data_type, ordinal_position " +
+        "select table_name, column_name, is_nullable, data_type, column_type, ordinal_position " +
         "from information_schema.columns " +
         "where table_schema = '" + database + "' " +
         "order by table_name, ordinal_position";
@@ -422,7 +427,7 @@ export function read(database:string, username:string, password:string, options:
         }
 
         var sql:string =
-            "select table_name, column_name, data_type, referenced_table_name, referenced_column_name, ordinal_position " +
+            "select table_name, column_name, is_nullable, data_type, column_type, referenced_table_name, referenced_column_name, ordinal_position " +
             "from SequelizeCustomFieldDefinitions " +
             "order by table_name, ordinal_position";
 
@@ -487,7 +492,7 @@ export function read(database:string, username:string, password:string, options:
 
             var isCalculated:boolean = customFieldLookup[row.column_name] !== undefined;
 
-            var field:Field = new Field(row.column_name, row.data_type, table, false, isCalculated);
+            var field:Field = new Field(row.column_name, row.data_type, row.is_nullable, table, false, isCalculated);
             table.fields.push(field);
 
             if (isCalculated && !calculatedFieldsFound[field.fieldName]) {
@@ -587,6 +592,7 @@ export function read(database:string, username:string, password:string, options:
                 parentTable.fields.push(new Field(
                     util.camelCase(row.table_name),                                     // Leads -> leads
                     Sequelize.Utils.singularize(row.table_name) + 'Pojo[]',             // Leads -> LeadPojo[]
+                    undefined,
                     parentTable,                                                        // Accounts table reference
                     true));
             }
@@ -598,6 +604,7 @@ export function read(database:string, username:string, password:string, options:
                             ? row.referenced_table_name                             // Accounts -> account
                             : associationName)),                                    // ownerUserId -> OwnerUsers -> ownerUser
                 Sequelize.Utils.singularize(row.referenced_table_name) + 'Pojo',    // Accounts -> AccountPojo
+                undefined,
                 childTable,
                 true));
 
@@ -645,12 +652,14 @@ export function read(database:string, username:string, password:string, options:
                 firstTable.fields.push(new Field(
                     util.camelCase(xref.secondTableName),
                     Sequelize.Utils.singularize(xref.secondTableName) + 'Pojo[]',
+                    undefined,
                     firstTable,
                     true));
 
                 secondTable.fields.push(new Field(
                     util.camelCase(xref.firstTableName),
-                        Sequelize.Utils.singularize(xref.firstTableName) + 'Pojo[]',
+                    Sequelize.Utils.singularize(xref.firstTableName) + 'Pojo[]',
+                    undefined,
                     secondTable,
                     true));
 
@@ -751,18 +760,20 @@ export function read(database:string, username:string, password:string, options:
             view.fields.push(new Field(
                 otherTableSingular,
                 otherTableSingular + 'Pojo',
+                undefined,
                 view,
                 true));
 
             otherTable.fields.push(new Field(
                 util.camelCase(view.tableName),
                 Sequelize.Utils.singularize(view.tableName, 'en') + 'Pojo[]',
+                undefined,
                 otherTable,
                 true));
 
         }
     }
-    
+
     function processIdFields():void
     {
         var idSuffix = Schema.idSuffix;
@@ -773,7 +784,7 @@ export function read(database:string, username:string, password:string, options:
         }
 
         var idFields:Array<Field> = [];
-        
+
         var idSuffixLen:number = idSuffix.length;
 
         for(var tableIndex:number = 0; tableIndex < schema.tables.length; tableIndex++)
