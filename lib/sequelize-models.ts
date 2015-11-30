@@ -42,7 +42,6 @@ export function initialize(database:string, username:string, password:string, op
         /*__each__ realDbFields, */'__fieldName__': __defineFieldType__
         },
         {
-            timestamps: false,
             classMethods: {
                 get__tableNameSingular__:(__tableNameSingularCamel__:any) => {
                     var where:{[key:string]:any} = {};
