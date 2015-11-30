@@ -39,7 +39,7 @@ export function initialize(database:string, username:string, password:string, op
     /*__startEach__ tables */
 
     __tableName__ = <types.__tableName__Model> SEQUELIZE.define<types.__tableNameSingular__Instance, types.__tableNameSingular__Pojo>('__tableNameSingular__', {
-        /*__each__ realDbFields, */'__fieldName__':__defineFieldType__
+        /*__each__ realDbFields, */'__fieldName__': __defineFieldType__
         },
         {
             timestamps: false,
@@ -74,4 +74,3 @@ export function initialize(database:string, username:string, password:string, op
 
     return exports;
 }
-

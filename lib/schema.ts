@@ -101,7 +101,7 @@ export class Schema {
         mediumtext: 'Sequelize.STRING',
         longtext: 'Sequelize.STRING',
         text: 'Sequelize.STRING',
-        "enum": 'Sequelize.STRING',
+        "enum": 'Sequelize.ENUM',
         "set": 'Sequelize.STRING',
         time: 'Sequelize.STRING',
         geometry: 'Sequelize.STRING'
@@ -211,7 +211,7 @@ export class Field
 {
     public targetIdFieldType:string; // if this is a prefixed foreign key, then the name of the non-prefixed key is here
 
-    constructor(public fieldName:string, public fieldType:string, public isNullableString:string, public table:Table, public isReference:boolean = false, public isCalculated:boolean = false)
+    constructor(public fieldName:string, public fieldType:string, public columnType:string, public isNullableString:string, public table:Table, public isReference:boolean = false, public isCalculated:boolean = false)
     {
 
     }
@@ -260,6 +260,9 @@ export class Field
         if (translated == undefined) {
             console.log('Unable to sequelize field type:' + this.fieldType);
             translated = this.fieldType;
+        }
+        if (this.fieldType==='enum') {
+            translated += this.columnType.slice(4).replace(/'/g, '"').replace(/""/g, "'");
         }
         return [`type: ${translated}`];
     }
@@ -373,6 +376,7 @@ interface ColumnDefinitionRow
 {
     table_name:string;
     column_name:string;
+    column_type:string;
     data_type:string;
     is_nullable:string;
     ordinal_position:number;
@@ -509,7 +513,7 @@ export function read(database:string, username:string, password:string, options:
 
             var isCalculated:boolean = customFieldLookup[row.column_name] !== undefined;
 
-            var field:Field = new Field(row.column_name, row.data_type, row.is_nullable, table, false, isCalculated);
+            var field:Field = new Field(row.column_name, row.data_type, row.column_type, row.is_nullable, table, false, isCalculated);
             table.fields.push(field);
 
             if (isCalculated && !calculatedFieldsFound[field.fieldName]) {
@@ -610,6 +614,7 @@ export function read(database:string, username:string, password:string, options:
                     util.camelCase(row.table_name),                                     // Leads -> leads
                     Sequelize.Utils.singularize(row.table_name) + 'Pojo[]',             // Leads -> LeadPojo[]
                     undefined,
+                    undefined,
                     parentTable,                                                        // Accounts table reference
                     true));
             }
@@ -621,6 +626,7 @@ export function read(database:string, username:string, password:string, options:
                             ? row.referenced_table_name                             // Accounts -> account
                             : associationName)),                                    // ownerUserId -> OwnerUsers -> ownerUser
                 Sequelize.Utils.singularize(row.referenced_table_name) + 'Pojo',    // Accounts -> AccountPojo
+                undefined,
                 undefined,
                 childTable,
                 true));
@@ -670,12 +676,14 @@ export function read(database:string, username:string, password:string, options:
                     util.camelCase(xref.secondTableName),
                     Sequelize.Utils.singularize(xref.secondTableName) + 'Pojo[]',
                     undefined,
+                    undefined,
                     firstTable,
                     true));
 
                 secondTable.fields.push(new Field(
                     util.camelCase(xref.firstTableName),
                     Sequelize.Utils.singularize(xref.firstTableName) + 'Pojo[]',
+                    undefined,
                     undefined,
                     secondTable,
                     true));
@@ -778,12 +786,14 @@ export function read(database:string, username:string, password:string, options:
                 otherTableSingular,
                 otherTableSingular + 'Pojo',
                 undefined,
+                undefined,
                 view,
                 true));
 
             otherTable.fields.push(new Field(
                 util.camelCase(view.tableName),
                 Sequelize.Utils.singularize(view.tableName, 'en') + 'Pojo[]',
+                undefined,
                 undefined,
                 otherTable,
                 true));
