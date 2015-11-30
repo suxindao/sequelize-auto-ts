@@ -1,8 +1,9 @@
-
-/// <reference path="../typings/node/node.d.ts" />
+/// <reference path="../typings/tsd.d.ts"/>
 
 import generator = require("./sequelize-auto-ts");
 import fs = require("fs");
+import path = require("path");
+import _ = require("lodash");
 var prompt = require("prompt");
 
 console.log("sequelize-auto-ts");
@@ -30,24 +31,53 @@ function processFromCommandLines()
         args.splice(i, 1);
     }
 
-    if (args.length < 4)
-    {
-        showHelp();
-        process.exit(1);
-    }
-
-
-    var options:generator.GenerateOptions =
-    {
+    var settingsJSON = (args.length===1) ? loadSettings(args[0]) : {
         database: args[0],
         username: args[1],
         password: args[2],
-        targetDirectory: args[3],
+        targetDirectory: args[3]
+    };
+    if (!args.length || (!settingsJSON && args.length < 4)) {
+        showHelp();
+        process.exit(1);
+    }
+    var options:generator.GenerateOptions = <generator.GenerateOptions>_.merge({
         modelFactory: modelFactory,
         options: null
-    };
+    }, settingsJSON);
 
     generate(options);
+}
+
+function loadSettings(filePath:string)
+{
+    var json:any = loadJSON(filePath);
+    if (!json) {
+        var fileName:string = path.basename(filePath);
+        json = loadJSON(fileName);
+        if (!json) {
+            json = loadFileFromParentDir(fileName);
+        }
+    }
+    return json;
+}
+function loadFileFromParentDir(filePath:string, limit:number = 10) {
+    if (!limit) return;
+    limit--;
+    filePath = '../' + filePath;
+    var raw:any = loadJSON(filePath);
+    if (!raw) {
+        raw = loadFileFromParentDir(filePath, limit);
+    }
+    return raw;
+}
+function loadJSON(jsonPath:string) {
+    try {
+        var raw:any = fs.readFileSync(jsonPath, 'utf8');
+        return JSON.parse(raw);
+    } catch (e) {
+        return;
+    }
 }
 
 function processFromPrompt()
@@ -60,9 +90,9 @@ function processFromPrompt()
             targetDirectory: { description: "Target directory", required: true }
         }
     };
-    
+
     prompt.start();
-    
+
     prompt.get(schema, function(err, result)
     {
         result.options = null;
@@ -98,6 +128,12 @@ function showHelp():void
     console.log("");
     console.log("Option 1: Command line arguments");
     console.log("");
+    console.log("    sequelize-auto-ts settingsFile");
+    console.log("");
+    console.log("            settingsFile    - The path of the file for settings");
+    console.log("");
+    console.log("    or");
+    console.log("");
     console.log("    sequelize-auto-ts database username password targetDirectory");
     console.log("");
     console.log("            database        - The name of the local database to generate typings/definitions from");
@@ -112,4 +148,3 @@ function showHelp():void
     console.log("            This will launch in interactive mode where user will be prompted for all required inputs.");
     console.log("");
 }
-
