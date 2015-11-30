@@ -275,11 +275,17 @@ export class Field
 
     customFieldType():string
     {
-        return this.isIdField()
-            ? (this.targetIdFieldType == undefined ? this.fieldNameProperCase() : this.targetIdFieldType)
-            : this.isReference
-                ? this.fieldType
-                : this.translatedFieldType();
+        if (this.isIdField()) {
+            if (this.targetIdFieldType == undefined) {
+                return this.fieldNameProperCase();
+            } else {
+                return this.targetIdFieldType;
+            }
+        } else if (this.isReference) {
+            return this.fieldType;
+        } else {
+            return this.translatedFieldType();
+        }
     }
 
     defineFieldType():string {
