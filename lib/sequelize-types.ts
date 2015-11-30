@@ -41,10 +41,7 @@ export interface __tableNameSingular__Pojo
 
 export interface __tableNameSingular__Instance extends sequelize.Instance<__tableNameSingular__Instance, __tableNameSingular__Pojo>, __tableNameSingular__Pojo { }
 
-export interface __tableName__Model extends sequelize.Model<__tableNameSingular__Instance, __tableNameSingular__Pojo> {
-    get__tableNameSingular__(__idFieldName__:__idFieldNameTitleCase__):sequelize.PromiseT<__tableNameSingular__Instance>;
-    get__tableNameSingular__(__tableNameSingularCamel__:__tableNameSingular__Pojo):sequelize.PromiseT<__tableNameSingular__Instance>;
-}
+export interface __tableName__Model extends sequelize.Model<__tableNameSingular__Instance, __tableNameSingular__Pojo> { }
 
 export function assertValid__tableNameSingular__(pojo:__tableNameSingular__Pojo, allowUndefined?:boolean):void {
 
