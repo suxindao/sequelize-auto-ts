@@ -248,7 +248,8 @@ export class Field
     }
 
     fieldNameAndIsNullable():string {
-        return this.fieldName + (this.isNullable() ? '?' : '');
+        var isNullable:boolean = (this.isNullable() || /(_at)|(At)$/.test(this.fieldName));
+        return this.fieldName + (isNullable ? '?' : '');
     }
 
     fieldNameProperCase():string
@@ -329,7 +330,7 @@ export class Field
             ];
         } else {
             fieldType = this.sequelizeFieldType();
-            if (!this.isNullable()) {
+            if (!this.isNullable() && !/(_at)|(At)$/.test(this.fieldName)) {
                 fieldType.push('allowNull: false');
             }
         }
