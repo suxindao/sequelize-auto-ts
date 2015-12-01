@@ -178,6 +178,10 @@ export class Table
         var name:string = ChangeCase.snake(this.tableName) + '_model';
         return ChangeCase[naming.defaults.caseType](name);
     }
+    getterName():string {
+        var name:string = 'get_' + ChangeCase.snake(this.tableName);
+        return ChangeCase[naming.defaults.caseType](name);
+    }
 
     public tableNameSingular():string
     {
