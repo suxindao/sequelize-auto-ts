@@ -180,7 +180,8 @@ export class Table
     }
     getterName():string {
         var name:string = 'get_' + ChangeCase.snake(this.tableName);
-        return ChangeCase[naming.defaults.caseType](name);
+        var type:string = _.has(naming, 'getterName.caseType') ? naming.getterName.caseType : naming.defaults.caseType;
+        return ChangeCase[type](name);
     }
 
     public tableNameSingular():string
