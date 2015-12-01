@@ -239,7 +239,7 @@ export class Field
 {
     public targetIdFieldType:string; // if this is a prefixed foreign key, then the name of the non-prefixed key is here
 
-    constructor(public fieldName:string, public fieldType:string, public columnType:string, public isNullableString:string, public table:Table, public isReference:boolean = false, public isCalculated:boolean = false)
+    constructor(public fieldName:string, public fieldType:string, public columnType:string, public columnDefault:string, public isNullableString:string, public table:Table, public isReference:boolean = false, public isCalculated:boolean = false)
     {
 
     }
@@ -252,6 +252,7 @@ export class Field
         var isNullable:boolean = (
             this.isNullable() ||
             /(_at)|(At)$/.test(this.fieldName) ||
+            (!_.isNull(this.columnDefault) && !_.isUndefined(this.columnDefault)) ||
             this.fieldName==='id' ||
             this.isReference
         );
@@ -442,6 +443,7 @@ interface ColumnDefinitionRow
     table_name:string;
     column_name:string;
     column_type:string;
+    column_default:string;
     data_type:string;
     is_nullable:string;
     ordinal_position:number;
@@ -475,7 +477,7 @@ export function read(database:string, username:string, password:string, options:
     var idFieldLookup:util.Dictionary<boolean> = {};
 
     var sql:string =
-        "select table_name, column_name, is_nullable, data_type, column_type, ordinal_position " +
+        "select table_name, column_name, is_nullable, data_type, column_type, column_default, ordinal_position " +
         "from information_schema.columns " +
         "where table_schema = '" + database + "' " +
         "order by table_name, ordinal_position";
@@ -518,7 +520,7 @@ export function read(database:string, username:string, password:string, options:
         }
 
         var sql:string =
-            "select table_name, column_name, is_nullable, data_type, column_type, referenced_table_name, referenced_column_name, ordinal_position " +
+            "select table_name, column_name, is_nullable, data_type, column_type, column_default, referenced_table_name, referenced_column_name, ordinal_position " +
             "from SequelizeCustomFieldDefinitions " +
             "order by table_name, ordinal_position";
 
@@ -584,7 +586,7 @@ export function read(database:string, username:string, password:string, options:
 
             var isCalculated:boolean = customFieldLookup[row.column_name] !== undefined;
 
-            var field:Field = new Field(row.column_name, row.data_type, row.column_type, row.is_nullable, table, false, isCalculated);
+            var field:Field = new Field(row.column_name, row.data_type, row.column_type, row.column_default, row.is_nullable, table, false, isCalculated);
             table.fields.push(field);
 
             if (isCalculated && !calculatedFieldsFound[field.fieldName]) {
@@ -707,6 +709,7 @@ export function read(database:string, username:string, password:string, options:
                 ChangeCase[naming.defaults.caseType](ChangeCase.snake(row.referenced_table_name) + '_pojo'),    // Accounts -> AccountPojo
                 undefined,
                 undefined,
+                undefined,
                 childTable,
                 true));
 
@@ -756,12 +759,14 @@ export function read(database:string, username:string, password:string, options:
                     Sequelize.Utils.singularize(xref.secondTableName) + 'Pojo[]',
                     undefined,
                     undefined,
+                    undefined,
                     firstTable,
                     true));
 
                 secondTable.fields.push(new Field(
                     util.camelCase(xref.firstTableName),
                     Sequelize.Utils.singularize(xref.firstTableName) + 'Pojo[]',
+                    undefined,
                     undefined,
                     undefined,
                     secondTable,
@@ -866,12 +871,14 @@ export function read(database:string, username:string, password:string, options:
                 otherTableSingular + 'Pojo',
                 undefined,
                 undefined,
+                undefined,
                 view,
                 true));
 
             otherTable.fields.push(new Field(
                 util.camelCase(view.tableName),
                 Sequelize.Utils.singularize(view.tableName) + 'Pojo[]',
+                undefined,
                 undefined,
                 undefined,
                 otherTable,
