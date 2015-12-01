@@ -447,7 +447,7 @@ export function read(database:string, username:string, password:string, options:
 
     sequelize
         .query(sql)
-        .then((rows)=>processTablesAndColumns(undefined, rows))
+        .then((rows)=>processTablesAndColumns(undefined, rows[0]))
         .catch((err)=>processTablesAndColumns(err, null));
 
     function processTablesAndColumns(err:Error, rows:Array<ColumnDefinitionRow>):void
@@ -573,7 +573,7 @@ export function read(database:string, username:string, password:string, options:
 
         sequelize
             .query(sql)
-            .then((rows)=>processReferences(undefined, rows))
+            .then((rows)=>processReferences(undefined, rows[0]))
             .catch((err)=>processReferences(err, null));
     }
 
