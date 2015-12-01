@@ -21,10 +21,10 @@ export var SEQUELIZE:sequelize.Sequelize;
 /*__each__ tables */ export var __modelTypeName__:types.__modelTypeName__;
 
 /*__ignore__*/ var __defineFieldType__;
-/*__ignore__*/ var __primaryTableName__:sequelize.Model<any, any>;
-/*__ignore__*/ var __foreignTableName__:sequelize.Model<any, any>;
-/*__ignore__*/ var __firstTableName__:sequelize.Model<any, any>;
-/*__ignore__*/ var __secondTableName__:sequelize.Model<any, any>;
+/*__ignore__*/ var __primaryTableModelName__:sequelize.Model<any, any>;
+/*__ignore__*/ var __foreignTableModelName__:sequelize.Model<any, any>;
+/*__ignore__*/ var __firstTableModelName__:sequelize.Model<any, any>;
+/*__ignore__*/ var __secondTableModelName__:sequelize.Model<any, any>;
 /*__ignore__*/ var __associationNameQuoted__:string;
 
 export function initialize(database:string, username:string, password:string, options:sequelize.Options):any
@@ -59,15 +59,15 @@ export function initialize(database:string, username:string, password:string, op
 
     /*__startEach__ references */
 
-    __primaryTableName__.hasMany(__foreignTableName__, {foreignKey: '__foreignKey__' });
-    __foreignTableName__.belongsTo(__primaryTableName__, {as: __associationNameQuoted__, foreignKey: '__foreignKey__' });
+    __primaryTableModelName__.hasMany(__foreignTableModelName__, {foreignKey: '__foreignKey__' });
+    __foreignTableModelName__.belongsTo(__primaryTableModelName__, {as: __associationNameQuoted__, foreignKey: '__foreignKey__' });
 
     /*__endEach__*/
 
     /*__startEach__ xrefs */
 
-    __firstTableName__.belongsToMany(__secondTableName__, { through: '__xrefTableName__'});
-    __secondTableName__.belongsToMany(__firstTableName__, { through: '__xrefTableName__'});
+    __firstTableModelName__.belongsToMany(__secondTableModelName__, { through: '__xrefTableName__'});
+    __secondTableModelName__.belongsToMany(__firstTableModelName__, { through: '__xrefTableName__'});
 
     /*__endEach__*/
 

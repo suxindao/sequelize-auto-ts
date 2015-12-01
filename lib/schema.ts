@@ -355,6 +355,18 @@ export class Reference {
 
     }
 
+    public primaryTableModelName():string
+    {
+        var name:string = ChangeCase.snake(this.primaryTableName) + '_model';
+        return ChangeCase[naming.defaults.caseType](name);
+    }
+
+    public foreignTableModelName():string
+    {
+        var name:string = ChangeCase.snake(this.foreignTableName) + '_model';
+        return ChangeCase[naming.defaults.caseType](name);
+    }
+
     public primaryTableNameCamel():string
     {
         return toCamelCase(this.primaryTableName);
@@ -383,6 +395,18 @@ export class Xref {
                 public secondFieldName:string,
                 public xrefTableName:string) {
 
+    }
+
+    public firstTableModelName():string
+    {
+        var name:string = ChangeCase.snake(this.firstTableName) + '_model';
+        return ChangeCase[naming.defaults.caseType](name);
+    }
+
+    public secondTableModelName():string
+    {
+        var name:string = ChangeCase.snake(this.secondTableName) + '_model';
+        return ChangeCase[naming.defaults.caseType](name);
     }
 
     public firstTableNameCamel():string
