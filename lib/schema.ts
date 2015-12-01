@@ -249,7 +249,12 @@ export class Field
     }
 
     fieldNameAndIsNullable():string {
-        var isNullable:boolean = (this.isNullable() || /(_at)|(At)$/.test(this.fieldName));
+        var isNullable:boolean = (
+            this.isNullable() ||
+            /(_at)|(At)$/.test(this.fieldName) ||
+            this.fieldName==='id' ||
+            this.isReference
+        );
         return this.fieldName + (isNullable ? '?' : '');
     }
 
