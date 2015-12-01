@@ -13,7 +13,7 @@
 import sequelize = require('sequelize');
 import types = require('./sequelize-types'); // important so we can use same fully qualified names in all generated files
 
-/*__each__ idFields */ export interface __fieldNameProperCase__ { __fieldNameProperCase__:number; }
+/*__each__ idFields */ export type __fieldNameProperCase__ = number;
 
 /*__ignore__*/ export interface __translatedFieldType__ {}
 /*__ignore__*/ export interface __customFieldType__ {}
