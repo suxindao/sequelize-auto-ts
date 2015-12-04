@@ -76,7 +76,7 @@ export class Schema {
 
     public static fieldTypeSequelize:util.Dictionary<string> = {
 
-        tinyint: 'Sequelize.INTEGER',
+        tinyint: 'Sequelize.BOOLEAN',
         smallint: 'Sequelize.INTEGER',
         int: 'Sequelize.INTEGER',
         integer: 'Sequelize.INTEGER',
@@ -340,8 +340,22 @@ export class Field
             if (!this.isNullable() && !/(_at)|(At)$/.test(this.fieldName)) {
                 fieldType.push('allowNull: false');
             }
+            if (!_.isNull(this.columnDefault)) {
+                fieldType.push('defaultValue: ' + this.generateDefaultValue());
+            }
         }
         return  '{' + fieldType.join(', ') + '}';
+    }
+
+    private generateDefaultValue():string
+    {
+        var raw = this.columnDefault;
+        if (this.fieldType==='tinyint') {
+            raw = (raw==='1') ? 'true' : 'false';
+        } else if (_.isString(raw) && !/^[1-9][0-9]*$/.test(raw)) {
+            raw = `"${raw}"`;
+        }
+        return raw;
     }
 
     public tableNameSingular():string
