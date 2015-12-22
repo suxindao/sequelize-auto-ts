@@ -180,7 +180,7 @@ export class Table
     }
     assertValidMethodName():string {
         var name:string = 'assert_valid_' + ChangeCase.snake(this.tableName);
-        return ChangeCase[naming.defaults.caseType](name);
+        return ChangeCase[naming.methodName.caseType](name);
     }
     getterName():string {
         var name:string = 'get_' + ChangeCase.snake(this.tableName);

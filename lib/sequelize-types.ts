@@ -65,7 +65,7 @@ export function __assertValidMethodName__(pojo:__pojoName__, allowUndefined?:boo
         }
     }
 }
-asserters['__tableNameSingular__'] = assertValid__tableNameSingular__;
+asserters['__tableNameSingular__'] = __assertValidMethodName__;
 
 
 
