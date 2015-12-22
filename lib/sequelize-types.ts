@@ -43,7 +43,7 @@ export interface __instanceTypeName__ extends sequelize.Instance<__instanceTypeN
 
 export interface __modelTypeName__ extends sequelize.Model<__instanceTypeName__, __pojoName__> { }
 
-export function assertValid__tableNameSingular__(pojo:__pojoName__, allowUndefined?:boolean):void {
+export function __assertValidMethodName__(pojo:__pojoName__, allowUndefined?:boolean):void {
 
     if (pojo === undefined || pojo === null) {
         if (allowUndefined) {

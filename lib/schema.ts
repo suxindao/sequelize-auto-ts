@@ -178,6 +178,10 @@ export class Table
         var name:string = ChangeCase.snake(this.tableName) + '_model';
         return ChangeCase[naming.defaults.caseType](name);
     }
+    assertValidMethodName():string {
+        var name:string = 'assert_valid_' + ChangeCase.snake(this.tableName);
+        return ChangeCase[naming.defaults.caseType](name);
+    }
     getterName():string {
         var name:string = 'get_' + ChangeCase.snake(this.tableName);
         var type:string = _.has(naming, 'getterName.caseType') ? naming.getterName.caseType : naming.defaults.caseType;
