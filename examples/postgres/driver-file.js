@@ -7,7 +7,8 @@ models.initialize('test001', 'dbuser', 'password', {
     }
 });
 var findall = models.UsersModel.findAll();
-findall.catch(function (error) {
+findall
+    .catch(function (error) {
     throw error;
 })
     .done(function (users) {
