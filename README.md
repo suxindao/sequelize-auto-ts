@@ -3,6 +3,12 @@ sequelize-auto-ts
 
 Generate Sequelize definition statements and compatible TypeScript definitions from a database schema
 
+# Pre-requisites
+
+```
+typings install
+```
+
 # Running sequelize-auto-ts
 
 Use node to execute `lib\cli.ts` and pass in four required parameters: database, username, password, and target directory.
@@ -105,9 +111,9 @@ export interface UserPojo
 Next for each table we genearte a plain JavaScript object, with the table name followed by `Pojo`. This base type is used in some input methods so they can easily be generated from scratch and are also returned from instance methods (defined below) by the `toJSON` method.
 
 ```JS
-export interface RoleInstance extends sequelize.Instance<RoleInstance, RolePojo>, RolePojo { }
+export interface RoleInstance extends sequelize.Instance<RolePojo>, RolePojo { }
 
-export interface UserInstance extends sequelize.Instance<UserInstance, UserPojo>, UserPojo { }
+export interface UserInstance extends sequelize.Instance<UserPojo>, UserPojo { }
 ```
 
 Each table then gets an `Instance` interface. This interface represents the object actually returned by Sequelize for each database entity. This interface extends the corresponding `Pojo` interface and thus has an interface field for every database field. It additionally extends `sequelize.Instance` which defines all of the Sequelize methods and fields available on instances, such as `get()`, `set()`, `save()`, etc. For a full list of available methods see the Sequelize documentation or refer to `sequelize.d.ts`.
