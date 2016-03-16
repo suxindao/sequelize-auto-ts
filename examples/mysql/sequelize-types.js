@@ -1,29 +1,65 @@
 "use strict";
 var asserters = {};
-function __assertValidMethodName__(pojo, allowUndefined) {
+function AssertValidRoles(pojo, allowUndefined) {
     if (pojo === undefined || pojo === null) {
         if (allowUndefined) {
             return;
         }
-        throw new Error('Invalid __tableNameSingular__ provided. It is \'' + (typeof pojo) + '\'.');
+        throw new Error('Invalid Role provided. It is \'' + (typeof pojo) + '\'.');
     }
     var fieldNames = Object.keys(pojo);
     if (fieldNames.length === 0) {
-        throw new Error('Invalid __tableNameSingular__ provided. It is an empty object.');
+        throw new Error('Invalid Role provided. It is an empty object.');
     }
     var i = fieldNames.length;
     while (i-- > 0) {
         switch (fieldNames[i]) {
-            case '__fieldName__':
-                assertValidFieldType('__tableNameSingular__', '__fieldName__', pojo, '__translatedFieldType__');
+            case 'RoleID':
+                assertValidFieldType('Role', 'RoleID', pojo, 'number');
+                break;
+            case 'RoleName':
+                assertValidFieldType('Role', 'RoleName', pojo, 'string');
                 break;
             default:
-                throw new Error('Invalid __tableNameSingular__ provided. Field \'' + fieldNames[i] + '\' is not supported.');
+                throw new Error('Invalid Role provided. Field \'' + fieldNames[i] + '\' is not supported.');
         }
     }
 }
-exports.__assertValidMethodName__ = __assertValidMethodName__;
-asserters['__tableNameSingular__'] = __assertValidMethodName__;
+exports.AssertValidRoles = AssertValidRoles;
+asserters['Role'] = AssertValidRoles;
+function AssertValidUsers(pojo, allowUndefined) {
+    if (pojo === undefined || pojo === null) {
+        if (allowUndefined) {
+            return;
+        }
+        throw new Error('Invalid User provided. It is \'' + (typeof pojo) + '\'.');
+    }
+    var fieldNames = Object.keys(pojo);
+    if (fieldNames.length === 0) {
+        throw new Error('Invalid User provided. It is an empty object.');
+    }
+    var i = fieldNames.length;
+    while (i-- > 0) {
+        switch (fieldNames[i]) {
+            case 'UserID':
+                assertValidFieldType('User', 'UserID', pojo, 'number');
+                break;
+            case 'RoleID':
+                assertValidFieldType('User', 'RoleID', pojo, 'number');
+                break;
+            case 'UserName':
+                assertValidFieldType('User', 'UserName', pojo, 'string');
+                break;
+            case 'role':
+                assertValidFieldType('User', 'role', pojo, 'RolesPojo');
+                break;
+            default:
+                throw new Error('Invalid User provided. Field \'' + fieldNames[i] + '\' is not supported.');
+        }
+    }
+}
+exports.AssertValidUsers = AssertValidUsers;
+asserters['User'] = AssertValidUsers;
 var BOOLEAN_TYPE = typeof (true);
 var NUMBER_TYPE = typeof (1);
 var STRING_TYPE = typeof ('');

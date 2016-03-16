@@ -39,6 +39,8 @@ This is the definition file for Node. As with `sequelize.d.ts` if it is found in
 
 For the rest of the explanation we'll use a very simple database with two tables and a relationship between them. It is defined as follows:
 
+MySQL
+
 ```SQL
 CREATE TABLE Roles (
 	RoleID INTEGER PRIMARY KEY AUTO_INCREMENT,
@@ -52,6 +54,24 @@ CREATE TABLE Users (
 
 	FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
 );
+```
+
+PostGresql
+
+```SQL
+CREATE TABLE Roles (
+	RoleID SERIAL PRIMARY KEY,
+	RoleName VARCHAR(255) NOT NULL
+);
+
+CREATE TABLE Users (
+	UserID SERIAL PRIMARY KEY,
+	RoleID INTEGER NOT NULL,
+	UserName VARCHAR(255) NOT NULL,
+
+	FOREIGN KEY (RoleID) REFERENCES Roles(RoleID)
+);
+
 ```
 
 # Generated Interfaces

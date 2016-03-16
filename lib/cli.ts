@@ -1,4 +1,4 @@
-/// <reference path="../typings/tsd.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 
 import generator = require("./sequelize-auto-ts");
 import fs = require("fs");
@@ -8,8 +8,9 @@ var prompt = require("prompt");
 
 console.log("sequelize-auto-ts");
 console.log("");
-console.log("Automatically generate sequelize definition statements and TypeScript types for your database.")
+console.log("Automatically generate sequelize definition statements and TypeScript types for your database.");
 console.log("");
+console.log("BP");
 
 if (process.argv.length > 2)
 {
@@ -35,9 +36,12 @@ function processFromCommandLines()
         database: args[0],
         username: args[1],
         password: args[2],
-        targetDirectory: args[3]
+        targetDirectory: args[3],
+        options: {
+            dialect : args[4]
+        }
     };
-    if (!args.length || (!settingsJSON && args.length < 4)) {
+    if (!args.length || (!settingsJSON && args.length < 5)) {
         showHelp();
         process.exit(1);
     }
@@ -87,7 +91,8 @@ function processFromPrompt()
             database: { description: "Database name", required: true },
             username: { description: "Username", required: true },
             password: { description: "Password", required: false, hidden: true },
-            targetDirectory: { description: "Target directory", required: true }
+            targetDirectory: { description: "Target directory", required: true },
+            dialect: { description: "Database dialect ( mysql, postgres, mariadb, mssql, sqlite)", required : true }
         }
     };
 
@@ -95,7 +100,9 @@ function processFromPrompt()
 
     prompt.get(schema, function(err, result)
     {
-        result.options = null;
+        result.options = {
+            dialect : result.dialect
+        };
         generate(<generator.GenerateOptions>result);
     })
 }
@@ -106,6 +113,7 @@ function generate(options:generator.GenerateOptions):void
     console.log("Username: " + options.username);
     console.log("Password: <hidden>");
     console.log("Target  : " + options.targetDirectory);
+    console.log("Database Dialect: " + options.options.dialect );
     console.log("");
 
     if (!fs.existsSync(options.targetDirectory))
@@ -140,6 +148,7 @@ function showHelp():void
     console.log("            username        - database user with access to read from database");
     console.log("            password        - password for user");
     console.log("            targetDirectory - The directory where generated files should be placed");
+    console.log("            dialect         - database dialect ( mysql, postgres, mariadb, mssql, sqlite)");
     console.log("");
     console.log("Option 2: Interactive");
     console.log("");

@@ -18,6 +18,7 @@
       <root url="file://$PROJECT_DIR$/node_modules/script-template/lib/index.js" />
       <root url="file://$PROJECT_DIR$/lib/util.js" />
     </CLASSES>
+    <JAVADOC />
     <SOURCES />
   </library>
 </component>

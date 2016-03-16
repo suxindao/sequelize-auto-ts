@@ -3,8 +3,7 @@
  * Loads and exposes schema from database
  */
 
-/// <reference path="../typings/tsd.d.ts"/>
-/// <reference path="../typings/change-case/change-case.d.ts"/>
+/// <reference path="../typings/main.d.ts"/>
 
 import util = require('./util');
 
@@ -14,7 +13,7 @@ import fs = require('fs');
 import _ = require('lodash');
 import ChangeCase = require('change-case');
 
-const DEFAULT_CASE_TYPE = 'case';
+const DEFAULT_CASE_TYPE = 'pascalCase';
 var naming:any;
 
 export class Schema {
@@ -71,7 +70,8 @@ export class Schema {
         "enum": "string",
         "set": "string",
         time: "string",
-        geometry: "string"
+        geometry: "string",
+        "character varying" : "string"
     };
 
     public static fieldTypeSequelize:util.Dictionary<string> = {
@@ -109,7 +109,8 @@ export class Schema {
         "enum": 'Sequelize.ENUM',
         "set": 'Sequelize.STRING',
         time: 'Sequelize.STRING',
-        geometry: 'Sequelize.STRING'
+        geometry: 'Sequelize.STRING',
+        "character varying" : 'Sequelize.STRING'
     };
 
     public uniqueReferences():Reference[] {
@@ -180,7 +181,8 @@ export class Table
     }
     assertValidMethodName():string {
         var name:string = 'assert_valid_' + ChangeCase.snake(this.tableName);
-        return ChangeCase[naming.methodName.caseType](name);
+        var type:string = _.has( naming, 'naming.methodName' ) ? naming.methodName.caseType : naming.defaults.caseType;
+        return ChangeCase[type](name);
     }
     getterName():string {
         var name:string = 'get_' + ChangeCase.snake(this.tableName);
@@ -381,7 +383,7 @@ export class Reference {
                 public primaryKey:string,
                 public foreignKey:string,
                 public isView:boolean,
-                private schema:Schema) {
+                public schema:Schema) {
 
     }
 
@@ -403,8 +405,13 @@ export class Reference {
     }
 
     public primaryTableNameModel():string {
-        return this.schema.useModelFactory ? this.primaryTableNameCamel() : this.primaryTableName;
+        if ( !this.schema ) {
+            return this.primaryTableName
+        } else {
+            return this.schema.useModelFactory ? this.primaryTableNameCamel() : this.primaryTableName;
+        }
     }
+
     public foreignTableNameCamel():string
     {
         return toCamelCase(this.foreignTableName);
@@ -499,6 +506,21 @@ export function read(database:string, username:string, password:string, options:
         "from information_schema.columns " +
         "where table_schema = '" + database + "' " +
         "order by table_name, ordinal_position";
+
+    switch( options.dialect ) {
+        case 'mysql' :
+            break;
+        case 'postgres' :
+            sql =
+                "select table_name, column_name, data_type, ordinal_position " +
+                "from information_schema.columns " +
+                "where table_catalog = '" + database + "' and " +
+                "table_schema = 'public' " +
+                "order by table_name, ordinal_position";
+            break;
+        default:
+            break;
+    }
 
     sequelize
         .query(sql)
@@ -626,6 +648,29 @@ export function read(database:string, username:string, password:string, options:
             "WHERE	constraint_schema = '" + database + "' " +
             "AND	referenced_table_name IS NOT NULL;";
 
+        switch( options.dialect ) {
+            case 'mysql' :
+                break;
+            case 'postgres' :
+                sql =
+                    "SELECT " +
+                    "tc.table_name, kcu.column_name, " +
+                    "ccu.table_name AS referenced_table_name, " +
+                    "ccu.column_name AS referenced_column_name " +
+                    "FROM " +
+                    "information_schema.table_constraints AS tc " +
+                    "JOIN information_schema.key_column_usage AS kcu " +
+                    "ON tc.constraint_name = kcu.constraint_name " +
+                    "JOIN information_schema.constraint_column_usage AS ccu " +
+                    "ON ccu.constraint_name = tc.constraint_name " +
+                    "WHERE " +
+                    "constraint_type = 'FOREIGN KEY' and " +
+                    "kcu.constraint_catalog = '" + database + "' ";
+                break;
+            default:
+                break;
+        }
+
         sequelize
             .query(sql)
             .then((rows)=>processReferences(undefined, rows[0]))
@@ -654,7 +699,15 @@ export function read(database:string, username:string, password:string, options:
 
         processReferenceXrefs();
 
-        fixViewNames();
+        switch( options.dialect ) {
+            case 'postgres' :
+                callback(null, schema);
+                break;
+            case 'mysql' :
+            default:
+                fixViewNames();
+                break;
+        }
 
         function processReferenceRow(row:ReferenceDefinitionRow):void {
             if (row.table_name.length > 4 && row.table_name.substr(0, 4) == 'Xref')
@@ -866,9 +919,19 @@ export function read(database:string, username:string, password:string, options:
 
             var otherTableName:string = Sequelize.Utils.pluralize(field.fieldNameProperCase().substr(0, field.fieldName.length - Schema.idSuffix.length));
 
+            switch( options.dialect ) {
+                case "mysql" :
+                    break;
+                case "postgres" :
+                    otherTableName = otherTableName.toLowerCase();
+                    break;
+                default:
+                    break;
+            }
+
             var otherTable:Table = tableLookup[otherTableName];
             if (otherTable === undefined) {
-                // console.log('Unable to find related table for view ' + view.tableName + '.' + field.fieldName + ', expected ' + otherTableName + '.');
+                console.log('Unable to find related table for view ' + view.tableName + '.' + field.fieldName + ', expected ' + otherTableName + '.');
                 return;
             }
 
