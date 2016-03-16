@@ -3,10 +3,17 @@ sequelize-auto-ts
 
 Generate Sequelize definition statements and compatible TypeScript definitions from a database schema
 
+# Pre-prerequisites
+
+```
+npm install -g typings
+```
+
 # Pre-requisites
 
 ```
 typings install
+npm install
 ```
 
 # Running sequelize-auto-ts
