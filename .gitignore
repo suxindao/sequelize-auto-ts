@@ -26,3 +26,5 @@ build/Release
 node_modules
 /.idea/workspace.xml
 /.idea/dbnavigator.xml
+
+temp

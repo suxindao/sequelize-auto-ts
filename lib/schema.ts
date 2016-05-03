@@ -47,6 +47,9 @@ export class Schema {
         float : "number",
         double : "number",
         decimal : "number",
+        "double precision" : "number",
+        real : "number",
+        numeric : "number",
 
         timestamp : "Date",
         date : "Date",
@@ -59,8 +62,10 @@ export class Schema {
         binary : "Buffer",
         varbinary : "Buffer",
         bit : "Buffer",
+        bytea : "Buffer",
 
         char : "string",
+        character : "string",
         varchar : "string",
         tinytext : "string",
         mediumtext : "string",
@@ -86,6 +91,9 @@ export class Schema {
         float : 'Sequelize.DECIMAL',
         double : 'Sequelize.DECIMAL',
         decimal : 'Sequelize.DECIMAL',
+        "double precision" : 'Sequelize.DECIMAL',
+        real : 'Sequelize.DECIMAL',
+        numeric : 'Sequelize.DECIMAL',
 
         timestamp : 'Sequelize.DATE',
         date : 'Sequelize.DATE',
@@ -98,6 +106,7 @@ export class Schema {
         binary : 'Sequelize.BLOB',
         varbinary : 'Sequelize.BLOB',
         bit : 'Sequelize.BLOB',
+        bytea : 'Sequelize.BLOB',
 
         char : 'Sequelize.STRING',
         varchar : 'Sequelize.STRING',
@@ -109,7 +118,8 @@ export class Schema {
         "set" : 'Sequelize.STRING',
         time : 'Sequelize.STRING',
         geometry : 'Sequelize.STRING',
-        "character varying" : 'Sequelize.STRING'
+        "character varying" : 'Sequelize.STRING',
+        character : 'Sequelize.STRING'
     };
 
     public uniqueReferences() : Reference[] {
