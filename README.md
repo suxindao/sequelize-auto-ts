@@ -18,15 +18,32 @@ npm install
 
 # Running sequelize-auto-ts
 
-Use node to execute `lib\cli.ts` and pass in four required parameters: database, username, password, and target directory.
+Change directory to the root of the source: `sequelize-auto-ts/`
+
+Use node to execute `lib\cli.ts` and pass in four required parameters:
+
+* database
+* username
+* password
+* target directory
+* database dialect
+
+Currently supported data base dialects:
+
+* MySQL - `mysql`
+* PostGresql - `postgres`
+
+run the following command:
 
 ```
-c:\sequelize-auto-ts>node lib\cli.ts world root rootPassword c:\my-project\src\models
+node lib/cli.js [database-name] [username] [password] [output-path] [database-dialect]
 ```
 
-# Version 1.0.3 documentation
+example:
 
-I pushed version 1.0.3 to NPM on 1/18/15 but have not updated the documentation yet. This version has a lot of new features. I'll update the documentation as soon as I can. If there is anything specific that should be updated or questions you have please create an issue in GitHub.
+```
+node lib/cli.js northwind dbuser password temp postgres
+```
 
 # Generated files
 
@@ -182,9 +199,6 @@ models.Users.findAll().complete((err:Error, users:types.UserInstance[]) => {
 
 In the above example, `findAll().complete()` takes a typed callback. If the argument types are not defined correctly, TypeScript will give a proper syntax error.
 
-
-
-
 # Table names on MySQL and Windows
 
 Table and database names are stored on disk using the lettercase specified in the CREATE TABLE or
@@ -193,9 +207,6 @@ CREATE DATABASE statement, but MySQL converts them to lowercase on lookup. Name 
 http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html
 
 lower_case_table_names=2
-
-
-
 
 # sequelize-auto-ts.json
 
@@ -207,6 +218,7 @@ e.g.
     "username": "root",
     "password": "test",
     "targetDirectory": "dest",
+		"",
     "naming": {
         "defaults": {
             "caseType": "pascal"
