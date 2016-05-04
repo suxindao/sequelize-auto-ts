@@ -1,5 +1,4 @@
-sequelize-auto-ts
-=================
+# sequelize-auto-ts
 
 Generate Sequelize definition statements and compatible TypeScript definitions from a database schema
 
@@ -28,7 +27,7 @@ Use node to execute `lib\cli.ts` and pass in four required parameters:
 * target directory
 * database dialect
 
-Currently supported data base dialects:
+Current supported database dialects:
 
 * MySQL - `mysql`
 * PostGresql - `postgres`
