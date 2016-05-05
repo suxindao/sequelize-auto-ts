@@ -229,3 +229,9 @@ e.g.
     }
 }
 ```
+
+# Development Notes
+
+* Composite Primary and Foreign Keys are currently NOT supported in Sequelize. Hence as a result, are
+NOT supported by this library.
+
