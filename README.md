@@ -217,7 +217,6 @@ e.g.
     "username": "root",
     "password": "test",
     "targetDirectory": "dest",
-		"",
     "naming": {
         "defaults": {
             "caseType": "pascal"
