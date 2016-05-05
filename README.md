@@ -15,6 +15,13 @@ typings install
 npm install
 ```
 
+# Development Notes
+
+* Composite Primary and Foreign Keys are currently NOT supported in Sequelize. Hence as a result, are
+NOT supported by this library.
+    * See: https://github.com/sequelize/sequelize/issues/1485
+    * See: https://github.com/sequelize/sequelize/issues/311
+
 # Running sequelize-auto-ts
 
 Change directory to the root of the source: `sequelize-auto-ts/`
@@ -228,11 +235,4 @@ e.g.
     }
 }
 ```
-
-# Development Notes
-
-* Composite Primary and Foreign Keys are currently NOT supported in Sequelize. Hence as a result, are
-NOT supported by this library.
-    * See: https://github.com/sequelize/sequelize/issues/1485
-    * See: https://github.com/sequelize/sequelize/issues/311
 
