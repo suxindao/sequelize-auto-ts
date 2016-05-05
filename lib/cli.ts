@@ -10,7 +10,6 @@ console.log("sequelize-auto-ts");
 console.log("");
 console.log("Automatically generate sequelize definition statements and TypeScript types for your database.");
 console.log("");
-console.log("BP");
 
 if (process.argv.length > 2) {
     processFromCommandLines();
