@@ -2,19 +2,6 @@
 
 Generate Sequelize definition statements and compatible TypeScript definitions from a database schema
 
-# Pre-prerequisites
-
-```
-npm install -g typings
-```
-
-# Pre-requisites
-
-```
-typings install
-npm install
-```
-
 # Development Notes
 
 * *Composite Primary and Foreign Keys*
@@ -32,6 +19,32 @@ statement, but MySQL converts them to lowercase on lookup. Name comparisons are 
     http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html
 
     lower_case_table_names=2
+
+# Pre-prerequisites
+
+You will need the following things properly installed on your computer.
+
+* node >= 5
+* npm >= 3
+
+To install the above, it is highly recommended to use a node version manager (i.e. https://github.com/creationix/nvm)
+
+# Pre-requisites
+
+* typescript >= 1.8 `npm install -g typescript`
+* typings `npm install -g typings`
+* grunt-cli `npm install -g grunt-cli`
+
+### Install npm and typscript Packages
+
+* `npm install`
+* `typings install`
+
+### Build Typescript Sources
+
+The following should lint and transpile typescript sources to javascript (there should be no errors)
+
+* `npm run build`
 
 # Running sequelize-auto-ts
 

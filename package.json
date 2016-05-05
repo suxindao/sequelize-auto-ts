@@ -11,6 +11,9 @@
     "script",
     "typescript"
   ],
+  "scripts": {
+    "build": "tsc"
+  },
   "homepage": "https://github.com/samuelneff/sequelize-auto-ts",
   "bugs": "https://github.com/samuelneff/sequelize-auto-ts/issues",
   "repository": {
@@ -27,7 +30,13 @@
     "sequelize": "^3.14.2"
   },
   "devDependencies": {
-    "jasmine-node": "1.14.3"
+    "grunt": "^0.4.5",
+    "grunt-tslint": "^3.0.3",
+    "jasmine-node": "1.14.3",
+    "load-grunt-tasks": "^3.4.1",
+    "shelljs": "^0.6.0",
+    "tslint": "^3.9.0",
+    "typescript": "^1.8.10"
   },
   "license": "MIT",
   "engines": {
