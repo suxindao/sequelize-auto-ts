@@ -62,6 +62,12 @@ example:
 node lib/cli.js northwind dbuser password temp postgres
 ```
 
+Additionally, you may also run the CLI in interactive mode by running the following (without arguments):
+
+```
+node lib/cli.js
+```
+
 # Generated files
 
 sequelize-auto-ts will generate two custom files in the target directory and copy one or two definition files.
