@@ -17,10 +17,21 @@ npm install
 
 # Development Notes
 
-* Composite Primary and Foreign Keys are currently NOT supported in Sequelize. Hence as a result, are
+* Composite Primary and Foreign Keys
+
+    Composite Primary and Foreign Keys are currently NOT supported in Sequelize. Hence as a result, are
 NOT supported by this library.
     * See: https://github.com/sequelize/sequelize/issues/1485
     * See: https://github.com/sequelize/sequelize/issues/311
+
+* Table names on MySQL and Windows
+
+    Table and database names are stored on disk using the lettercase specified in the CREATE TABLE or CREATE DATABASE
+statement, but MySQL converts them to lowercase on lookup. Name comparisons are not case sensitive.
+
+    http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html
+
+    lower_case_table_names=2
 
 # Running sequelize-auto-ts
 
@@ -204,15 +215,6 @@ models.Users.findAll().complete((err:Error, users:types.UserInstance[]) => {
 ```
 
 In the above example, `findAll().complete()` takes a typed callback. If the argument types are not defined correctly, TypeScript will give a proper syntax error.
-
-# Table names on MySQL and Windows
-
-Table and database names are stored on disk using the lettercase specified in the CREATE TABLE or
-CREATE DATABASE statement, but MySQL converts them to lowercase on lookup. Name comparisons are not case sensitive.
-
-http://dev.mysql.com/doc/refman/5.0/en/identifier-case-sensitivity.html
-
-lower_case_table_names=2
 
 # sequelize-auto-ts.json
 
