@@ -75,7 +75,8 @@ export class Schema {
         "set" : "string",
         time : "string",
         geometry : "string",
-        "character varying" : "string"
+        "character varying" : "string",
+        "USER-DEFINED" : "string"
     };
 
     public static fieldTypeSequelize : util.Dictionary<string> = {
@@ -119,7 +120,8 @@ export class Schema {
         time : 'Sequelize.STRING',
         geometry : 'Sequelize.STRING',
         "character varying" : 'Sequelize.STRING',
-        character : 'Sequelize.STRING'
+        character : 'Sequelize.STRING',
+        "USER-DEFINED" : 'Sequelize.STRING'
     };
 
     public uniqueReferences() : Reference[] {
