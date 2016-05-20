@@ -3,7 +3,7 @@
  * Loads and exposes schema from database
  */
 
-/// <reference path="../typings/main.d.ts"/>
+/// <reference path="../typings/index.d.ts"/>
 
 import util = require('./util');
 
