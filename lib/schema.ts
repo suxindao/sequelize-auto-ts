@@ -37,6 +37,8 @@ export class Schema {
     public static fieldTypeTranslations : util.Dictionary<string> = {
 
         tinyint : "boolean",
+        
+        boolean : "boolean",
 
         smallint : "number",
         int : "number",
@@ -82,6 +84,9 @@ export class Schema {
     public static fieldTypeSequelize : util.Dictionary<string> = {
 
         tinyint : 'Sequelize.BOOLEAN',
+        
+        boolean : 'Sequelize.BOOLEAN',
+        
         smallint : 'Sequelize.INTEGER',
         int : 'Sequelize.INTEGER',
         integer : 'Sequelize.INTEGER',
