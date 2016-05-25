@@ -29,3 +29,4 @@ node_modules
 
 temp
 /.idea/
+*.DS_Store
