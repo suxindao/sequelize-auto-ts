@@ -284,7 +284,7 @@ export class Field {
 
     translatedFieldType() : string {
         var fieldType : string = this.fieldType;
-        var translated : string = Schema.fieldTypeTranslations[fieldType];;
+        var translated : string = Schema.fieldTypeTranslations[fieldType];
 
         if (translated == undefined) {
             var fieldTypeLength : number = fieldType.length;
@@ -558,10 +558,13 @@ export function read(database : string, username : string, password : string, op
                     for (var k : number = 0; k < pragma[0].length; k++) {
                         var column : any = pragma[0][k];
                         var row = <ColumnDefinitionRow>{};
+                        var type = column.type.toLowerCase();
+                        if(type === "")
+                            type = "text";
                         row.table_name = table;
                         row.column_name = column.name;
-                        row.column_type = column.type.toLowerCase();
-                        row.data_type = column.type.toLowerCase();
+                        row.column_type = type;
+                        row.data_type = type;
                         row.column_default = column.dflt_value;
                         row.is_nullable = (column.notnull =='1') ? '0' : '1';
                         row.ordinal_position = column.cid;
