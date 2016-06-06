@@ -516,7 +516,7 @@ export function read(database : string, username : string, password : string, op
             break;
     }
     
-    if(options.dialect='sqlite') {
+    if(options.dialect == 'sqlite') {
         sql =
             "select name " +
             "from sqlite_master " +
