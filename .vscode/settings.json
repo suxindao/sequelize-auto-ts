@@ -1,0 +1,10 @@
+// Platzieren Sie Ihre Einstellungen in dieser Datei, um Standard- und Benutzereinstellungen zu überschreiben.
+{
+    "files.exclude": {
+        "*/**/.swp": true,
+        "lib/*.js.map": true,
+        "lib/*.js": true,
+        "examples/**/*.js.map": true,
+        "examples/**/*.js": true
+    }
+}
