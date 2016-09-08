@@ -6,6 +6,7 @@ Generate Sequelize definition statements and compatible TypeScript definitions f
 Using MYSQL
 
 SQL: magic-platform.sql
+
 PORT: 33306
 
 ```
