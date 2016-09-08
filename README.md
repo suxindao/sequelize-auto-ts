@@ -12,13 +12,16 @@ PORT: 33306
 ```
 npm install
 typings install
+npm run build
+```
+
+### Run sample
+```
 mkdir models
 node lib/cli.js magic-platform root 123456 models mysql
 ```
 
-### Run sample
-
-create driver-file.js in models
+create driver-file.ts in models folder
 ```
 import types = require('./sequelize-types');
 import models = require('./sequelize-models');

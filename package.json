@@ -12,7 +12,8 @@
     "typescript"
   ],
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "test": "node models/driver-file.js"
   },
   "homepage": "https://github.com/samuelneff/sequelize-auto-ts",
   "bugs": "https://github.com/samuelneff/sequelize-auto-ts/issues",
