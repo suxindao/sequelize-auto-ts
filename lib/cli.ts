@@ -35,7 +35,8 @@ function processFromCommandLines() {
         targetDirectory : args[3],
         options : {
             dialect : args[4],
-            storage : args[5]
+            storage : args[5],
+            port : 33306
         }
     };
     if (!args.length || (!settingsJSON && args.length < 5)) {

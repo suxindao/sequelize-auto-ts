@@ -76,6 +76,14 @@ example:
 
 ```
 node lib/cli.js northwind dbuser password temp postgres
+
+node lib/cli.js magic-platform root 123456 models mysql
+```
+
+run sample:
+```
+tsc
+node models/driver-file.js
 ```
 
 Additionally, you may also run the CLI in interactive mode by running the following (without arguments):
