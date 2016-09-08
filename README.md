@@ -2,6 +2,56 @@
 
 Generate Sequelize definition statements and compatible TypeScript definitions from a database schema
 
+### Quick using
+Using MYSQL
+
+SQL: magic-platform.sql
+PORT: 33306
+
+```
+npm install
+typings install
+mkdir models
+node lib/cli.js magic-platform root 123456 models mysql
+```
+
+### Run sample
+
+create driver-file.js in models
+```
+import types = require('./sequelize-types');
+import models = require('./sequelize-models');
+
+models.initialize('magic-platform', 'root', '123456', {
+  dialect: 'mysql',
+  port: 33306,
+  define: {
+    timestamps: false,
+    freezeTableName: true
+  }
+});
+
+let findall = models.AdminModel.findAll();
+
+findall
+  .catch((error: any) => {
+    throw error;
+  })
+  .done((users: any) => {
+    console.log('Returned ' + users.length + ' users.');
+
+    users.forEach((user: types.AdminPojo) => {
+      console.log(user.id + ' (' + user.name + ')');
+    })
+  });
+```
+Run test sample:
+
+```
+tsc
+node models/driver-file.js
+```
+
 # Development Notes
 
 * *Composite Primary and Foreign Keys*
@@ -77,6 +127,7 @@ example:
 ```
 node lib/cli.js northwind dbuser password temp postgres
 
+mkdir models
 node lib/cli.js magic-platform root 123456 models mysql
 ```
 
