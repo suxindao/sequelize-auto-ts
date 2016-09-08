@@ -2,7 +2,7 @@
 
 Generate Sequelize definition statements and compatible TypeScript definitions from a database schema
 
-### Quick using
+### Quick start
 Using MYSQL
 
 SQL: magic-platform.sql
